@@ -16,6 +16,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final formKey = GlobalKey<FormState>();
   final _nameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
+  final _phoneTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
                    validator: (value) => Validator.validateEmail(value!),
                 ),
               ),
+             
                Padding(
                 padding: EdgeInsets.all(24),
                 child: TextFormField(
@@ -71,6 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     User? user = await FireAuth.register(
                       name: _nameTextController.text,
                       email: _emailTextController.text,
+                     
                       password: _passwordTextController.text,
                     );
                     if(user != null) {

@@ -29,11 +29,13 @@ class _HomePageState extends State<HomePage> {
        await FireAuth.logout();
        _isSigninOut = true;
        
-       print(_currentUser);
+      
        Future.delayed(Duration(seconds: 2), () {
         CircularProgressIndicator();
         Navigator.push(context, MaterialPageRoute(builder: (context) {
+          print(_currentUser);
           return LoginPage();
+           
         }));
        });
                     });
@@ -57,6 +59,7 @@ class _HomePageState extends State<HomePage> {
               'EMAIL: ${_currentUser.email}',
               style: Theme.of(context).textTheme.bodyText1,
             ),
+            
             SizedBox(height: 16.0),
             _currentUser.emailVerified
                 ? Text(

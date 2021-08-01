@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class FireAuth {
     required String name,
     required String email,
     required String password,
+    
   }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
@@ -15,9 +17,11 @@ class FireAuth {
       email: email, password: password);
       user = userCredential.user;
       await user!.updateDisplayName(name);
+      
     
       await user.reload();
       user = auth.currentUser;
+      await FirebaseFirestore.instance.collection("/users").doc(user!.uid).set({"email": user.email, "name": user.displayName });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -43,6 +47,7 @@ class FireAuth {
         password: password,
       );
       user = userCredential.user;
+      
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
