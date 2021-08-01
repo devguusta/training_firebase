@@ -18,58 +18,119 @@ class _SignUpPageState extends State<SignUpPage> {
   final _emailTextController = TextEditingController();
   final _phoneTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
+  PageController pageController = PageController();
+  int pageChanged = 0;
+  bool isloading = false;
+  @override
+  void initState() {
+    pageController = PageController(
+      initialPage: 0,
+      keepPage: true,
+      viewportFraction: 1,
+    );
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _nameTextController.dispose();
+    _emailTextController.dispose();
+    _passwordTextController.dispose();
+    pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Form(
-          key: formKey,
+      body: isloading ? Center(child: CircularProgressIndicator())
+       : Form(
+        key: formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: EdgeInsets.all(24),
-                child: TextFormField(
-                  controller: _nameTextController,
-                  decoration: InputDecoration(
-                    labelText: "Insira seu nome",
+              Expanded(
+                   child: PageView(
+                  physics: NeverScrollableScrollPhysics(),
+                  pageSnapping: true,
+                  onPageChanged: (index) {
+                    setState(() {
+                       pageChanged= index;
+                    });
+                   
+                  },
+                  controller: pageController,
+                children: [
+                  Container(
+                    color: Colors.orange,
+                    child: Column(
+                      
+                      children: [
+                        TextFormField(
+                          controller: _nameTextController,
+                          decoration: InputDecoration(
+                            labelText: "Insira seu nome",
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                           validator: (value) => Validator.validateName(value!),
+                        ),
+                        ElevatedButton(
+                          onPressed: (){
+                            if(formKey.currentState!.validate()) {
+                               pageController.nextPage(duration: Duration(microseconds:400),
+                             curve: Curves.easeIn,   
+                             );
+                            }
+                           
+                          },
+                          child: Text("Next"),
+                        )
+                       
+                      ],
+                    ),
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                   validator: (value) => Validator.validateName(value!),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(24),
-                child: TextFormField(
-                  controller: _emailTextController,
-                  decoration: InputDecoration(
-                    labelText: "Insira seu email",
+                   Container(
+                     color: Colors.blue,
+                     child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _emailTextController,
+                          decoration: InputDecoration(
+                            labelText: "Insira seu email",
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                           validator: (value) => Validator.validateEmail(value!),
+                        ),
+                         ElevatedButton(
+                          onPressed: (){
+                            if(formKey.currentState!.validate()) {
+                               pageController.nextPage(duration: Duration(microseconds:400),
+                             curve: Curves.easeIn,   
+                             );
+                            }
+                           
+                          },
+                          child: Text("Next"),
+                        )
+                        
+                      ],
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                   validator: (value) => Validator.validateEmail(value!),
-                ),
-              ),
-             
-               Padding(
-                padding: EdgeInsets.all(24),
-                child: TextFormField(
-                  controller: _passwordTextController,
-                  validator: (value) => Validator.validatePassword(value!),
-                  decoration: InputDecoration(
-                    labelText: "Insira sua senha",
-                  ),
-                  keyboardType: TextInputType.visiblePassword,
-                ),
-              ),
-              TextButton(
-                onPressed: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-                child: Text("Já possui uma conta? Entre agora"),
-              ),
-              ElevatedButton(
+                   ),
+                   Container(
+                     color: Colors.blueGrey,
+                     child: Column(
+                      children: [
+                        
+                        TextFormField(
+                          controller: _passwordTextController,
+                          validator: (value) => Validator.validatePassword(value!),
+                          decoration: InputDecoration(
+                            labelText: "Insira sua senha",
+                          ),
+                          keyboardType: TextInputType.visiblePassword,
+                        ),
+                         ElevatedButton(
                 onPressed: () async{
                   if(formKey.currentState!.validate()) {
+                    isloading = true;
                     User? user = await FireAuth.register(
                       name: _nameTextController.text,
                       email: _emailTextController.text,
@@ -80,18 +141,29 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) => 
                         HomePage(user: user),
+                        
                         ),
                         ModalRoute.withName('/'),
                         );
+                        isloading = false;
                     }
                   }
                 },
                 child: Text("Registrar"),
               ),
+                      ],
+                  ),
+                   ),
+                ],
+        ),
+              ),
             ],
           ),
-        ),
       ),
+      
+     
     );
   }
 }
+
+
