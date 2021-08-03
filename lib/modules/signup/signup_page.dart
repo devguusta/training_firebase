@@ -88,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                    Container(
-                     color: Colors.blue,
+                     color: Colors.grey,
                      child: Column(
                       children: [
                         TextFormField(
@@ -165,5 +165,3 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
-
-
