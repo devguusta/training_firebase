@@ -1,4 +1,4 @@
-import 'package:firebase1/modules/login/login_page.dart';
+import 'package:firebase1/modules/login/login/login_page.dart';
 import 'package:firebase1/shared/auth/auth_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

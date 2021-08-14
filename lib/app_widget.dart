@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'modules/login/login_page.dart';
-import 'modules/signup/signup_page.dart';
+import 'modules/login/login/login_page.dart';
+import 'modules/login/signup/signup_page.dart';
 
 class AppWidget extends StatelessWidget {
   // This widget is the root of your application.

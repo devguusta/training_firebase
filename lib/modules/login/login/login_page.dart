@@ -1,5 +1,7 @@
 import 'package:firebase1/modules/home/home_page.dart';
-import 'package:firebase1/modules/signup/signup_page.dart';
+import 'package:firebase1/modules/login/login/login_controller.dart';
+import 'package:firebase1/modules/login/login_repository.dart';
+import 'package:firebase1/modules/login/signup/signup_page.dart';
 import 'package:firebase1/shared/auth/auth_controller.dart';
 import 'package:firebase1/utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,9 +15,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginController controller = LoginController(repository: LoginRepository());
+
   final formKey = GlobalKey<FormState>();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
+  bool isloading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,14 +35,13 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextFormField(
                   controller: _emailTextController,
                   validator: (value) => Validator.validateEmail(value!),
-                   decoration: InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Insira seu email",
                   ),
                   keyboardType: TextInputType.emailAddress,
-                  ),
-                 
                 ),
-               Padding(
+              ),
+              Padding(
                 padding: EdgeInsets.all(24),
                 child: TextFormField(
                   controller: _passwordTextController,
@@ -49,28 +53,36 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               TextButton(
-                onPressed: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+                onPressed: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => SignUpPage()));
                 },
                 child: Text("Não possui uma conta ? Cadastre-se agora"),
               ),
               ElevatedButton(
-               onPressed: () async {
-          if (formKey.currentState!.validate()) {
-            User? user = await FireAuth.signInUsingEmailPassword(
-              email: _emailTextController.text,
-              password: _passwordTextController.text,
-              context: context,
-            );
-            if (user != null) {
-              Navigator.of(context)
-                  .pushReplacement(
-                MaterialPageRoute(builder: (context) => HomePage(user: user)),
-              );
-            }
-          }
-        },
-    
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    isloading = true;
+                    try {
+                      User? user = await controller.login(
+                        email: _emailTextController.text,
+                        password: _passwordTextController.text,
+                      );
+                      if (user != null) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => HomePage(user: user)),
+                          ModalRoute.withName('/'),
+                        );
+                        isloading = false;
+                      }
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              'Erro ao criar conta, por favor tente novamente!')));
+                    }
+                  }
+                },
                 child: Text("Login"),
               ),
             ],
