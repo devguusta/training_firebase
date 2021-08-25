@@ -4,51 +4,47 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserData {
   final String email;
-  final String cpf;
+  final String name;
   final FieldValue createData;
   final String uid;
-  final String phone;
   UserData({
     required this.email,
-    required this.cpf,
+    required this.name,
     required this.createData,
     required this.uid,
-    required this.phone,
   });
+  
+  
 
   UserData copyWith({
     String? email,
-    String? cpf,
+    String? name,
     FieldValue? createData,
     String? uid,
-    String? phone,
   }) {
     return UserData(
       email: email ?? this.email,
-      cpf: cpf ?? this.cpf,
+      name: name ?? this.name,
       createData: createData ?? this.createData,
       uid: uid ?? this.uid,
-      phone: phone ?? this.phone,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'email': email,
-      'cpf': cpf,
+      'name': name,
       'createData': createData,
       'uid': uid,
-      'phone': phone,
     };
   }
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
       email: map['email'],
-      cpf: map['cpf'],
+      name: map['name'],
       createData: map['createData'],
       uid: map['uid'],
-      phone: map['phone'],
     );
   }
 
@@ -58,7 +54,7 @@ class UserData {
 
   @override
   String toString() {
-    return 'UserData(email: $email, cpf: $cpf, createData: $createData, uid: $uid, phone: $phone)';
+    return 'UserData(email: $email, name: $name, createData: $createData, uid: $uid)';
   }
 
   @override
@@ -67,18 +63,16 @@ class UserData {
   
     return other is UserData &&
       other.email == email &&
-      other.cpf == cpf &&
+      other.name == name &&
       other.createData == createData &&
-      other.uid == uid &&
-      other.phone == phone;
+      other.uid == uid;
   }
 
   @override
   int get hashCode {
     return email.hashCode ^
-      cpf.hashCode ^
+      name.hashCode ^
       createData.hashCode ^
-      uid.hashCode ^
-      phone.hashCode;
+      uid.hashCode;
   }
 }

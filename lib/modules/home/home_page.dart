@@ -1,10 +1,14 @@
 import 'package:firebase1/modules/login/login/login_page.dart';
 import 'package:firebase1/shared/auth/auth_controller.dart';
+import 'package:firebase1/shared/models/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  final User user;
+  final UserData user;
+  // final String userEmail;
+  // final String userName;
+  
   HomePage({
     Key? key,
     required this.user,
@@ -18,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   bool _isSendingVerification = false;
   bool _isSigninOut = false;
 
-  late User _currentUser;
+  late UserData _currentUser;
   @override
   void initState() {
     _currentUser = widget.user;
@@ -51,7 +55,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'NAME: ${_currentUser.displayName}',
+              'NAME: ${_currentUser.name}',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(height: 16.0),
@@ -61,21 +65,21 @@ class _HomePageState extends State<HomePage> {
             ),
             
             SizedBox(height: 16.0),
-            _currentUser.emailVerified
-                ? Text(
-                    'Email verified',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: Colors.green),
-                  )
-                : Text(
-                    'Email not verified',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: Colors.red),
-                  ),
+            // _currentUser.emailVerified
+            //     ? Text(
+            //         'Email verified',
+            //         style: Theme.of(context)
+            //             .textTheme
+            //             .bodyText1!
+            //             .copyWith(color: Colors.green),
+            //       )
+            //     : Text(
+            //         'Email not verified',
+            //         style: Theme.of(context)
+            //             .textTheme
+            //             .bodyText1!
+            //             .copyWith(color: Colors.red),
+            //       ),
                   ElevatedButton(onPressed: logout, child:Text("Sair")),
                   
               // Add widgets for verifying email

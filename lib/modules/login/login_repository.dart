@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase1/shared/models/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 
 class LoginRepository {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseDatabase _db = FirebaseDatabase.instance;
+  FirebaseFirestore _db = FirebaseFirestore.instance;
   User? user;
 
-  Future<User?> login({
+  Future<UserData?> login({
     required String email,
     required String password,
     // required BuildContext context,
@@ -19,6 +20,11 @@ class LoginRepository {
         password: password,
       );
       user = response.user;
+      if(user!=null){
+      return await _db.collection('users').doc(user!.uid).get().then((value){
+         return UserData.fromMap(value.data()!);
+       });
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -27,7 +33,6 @@ class LoginRepository {
       }
     }
 
-    return user;
   }
 
   Future<User?> register({
@@ -45,7 +50,7 @@ class LoginRepository {
 
       await user!.reload();
       user = _auth.currentUser;
-      await FirebaseFirestore.instance
+      await _db 
           .collection("/users")
           .doc(user!.uid)
           .set({"email": user!.email, "name": user!.displayName});

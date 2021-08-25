@@ -3,6 +3,7 @@ import 'package:firebase1/modules/login/login/login_controller.dart';
 import 'package:firebase1/modules/login/login_repository.dart';
 import 'package:firebase1/modules/login/signup/signup_page.dart';
 import 'package:firebase1/shared/auth/auth_controller.dart';
+import 'package:firebase1/shared/models/user_data.dart';
 import 'package:firebase1/utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (formKey.currentState!.validate()) {
                     isloading = true;
                     try {
-                      User? user = await controller.login(
+                      UserData? user = await controller.login(
                         email: _emailTextController.text,
                         password: _passwordTextController.text,
                       );
