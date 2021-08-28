@@ -1,6 +1,10 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase1/modules/home/home_page.dart';
 import 'package:firebase1/shared/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class LoginRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -70,4 +74,16 @@ class LoginRepository {
       throw e;
     }
   }
-}
+  // Future<void> checkEmailVerified() async {
+  //   User? user;
+  //   user = _auth.currentUser;
+  //   await user!.reload();
+  //   if(user.emailVerified){
+  //    Navigator.of(context).pushReplacement(builder: (contexxt) => HomePage(user: )))
+  //   }
+  // }
+  
+  Future<User?> emailVerification() async {
+  User? user;
+    user!.sendEmailVerification();
+  }}

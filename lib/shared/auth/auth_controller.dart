@@ -64,7 +64,7 @@ class FireAuth {
     
   }
 
-  static Future<User?> emailVerification() async {
+  Future<User?> emailVerification() async {
   FirebaseAuth auth = FirebaseAuth.instance;
   User? user;
     user!.sendEmailVerification();
