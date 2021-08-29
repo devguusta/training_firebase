@@ -53,7 +53,7 @@ class AppTextStyles {
 
   static const TextStyle kPrimaryTextLoginPage = TextStyle(
     fontWeight: FontWeight.w400,
-    fontSize: 26,
+    fontSize: 18,
     fontFamily: "Roboto",
     color: AppColors.kCyan,
   );

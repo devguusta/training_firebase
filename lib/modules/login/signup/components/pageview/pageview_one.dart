@@ -8,8 +8,11 @@ import 'package:flutter/material.dart';
 
 class PageViewOne extends StatefulWidget {
   final TextEditingController emailController;
+  
   final TextEditingController nameController;
-  const PageViewOne({
+  
+  
+  PageViewOne({
     Key? key,
     required this.emailController,
     required this.nameController,
@@ -20,6 +23,8 @@ class PageViewOne extends StatefulWidget {
 }
 
 class _PageViewOneState extends State<PageViewOne> {
+  final emailFocusNode = FocusNode();
+  final nameFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -48,10 +53,10 @@ class _PageViewOneState extends State<PageViewOne> {
           child: Padding(
             padding: const EdgeInsets.only(left: 48.0, top: 16.0),
             child: AnimatedCard(
-              direction: AnimatedCardDirection.right,
+              direction: AnimatedCardDirection.left,
               duration: const Duration(milliseconds: 600),
               child: const Text(
-                "Todos os seus dados estarão seguros!",
+                "Não se preocupe! Todos os seus dados estarão seguros!",
                 style: AppTextStyles.kPrimaryTextLoginPage,
               ),
             ),
@@ -77,6 +82,7 @@ class _PageViewOneState extends State<PageViewOne> {
           controller: widget.nameController,
           validator: (String? value) => Validators().validateName(value!),
           textInputAction: TextInputAction.next,
+          focusNode: nameFocusNode,
         ),
         SizedBox(height: size.height * 0.05),
         InputForm(
@@ -87,6 +93,7 @@ class _PageViewOneState extends State<PageViewOne> {
           validator: (String? value) => Validators.validateEmail(value),
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
+         focusNode: emailFocusNode,
            
         ),
       ],

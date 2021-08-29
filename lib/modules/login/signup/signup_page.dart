@@ -26,6 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final controller = SignUpManager();
   final formKey = GlobalKey<FormState>();
   final _nameTextController = TextEditingController();
+
   final _emailTextController = TextEditingController();
   final _cpfTextController = TextEditingController();
   final _phoneTextController = TextEditingController();
@@ -56,6 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: isloading
           ? Center(child: CircularProgressIndicator())
           : SafeArea(
@@ -76,7 +78,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           children: [
                           Stack(
                             children: [
-                                PageViewOne(emailController: _emailTextController, nameController: _nameTextController),
+                                PageViewOne(
+                                  emailController: _emailTextController,
+                                  nameController: _nameTextController),
                                Align(
                                  alignment: Alignment.bottomCenter,
                                  child: SignUpFooter(
